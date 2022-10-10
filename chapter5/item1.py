@@ -1,3 +1,21 @@
+# มีรถไฟอยู่ขบวนหนึ่ง โดยรถไฟนั้นจะมีหมายเลขกำกับตู้แต่ละตู้อยู่และรถไฟก็มีหัวรถจักรอยู่
+# แต่หัวรถจักรดันไปต่อกับตู้รถไฟอยู่ พี่ต้องการให้น้อง ๆ ทำการแบ่งขบวนรถไฟออก
+# โดยให้หัวรถจักรอยู่ข้างหน้าสุด และส่วนตู้ที่เหลือให้ทำการต่อกับตู้สุดท้ายโดยไม่มีการเปลี่ยนลำดับของตู้
+# ซึ่งพี่จะให้หมายเลข 0 แทนเป็นหัวรถจักร ส่วน หมายเลขอื่นจะเป็นตู้รถไฟ
+# เช่น 2 <- 3 <- 1 <- 0 <- 4 <- 5 <- 6
+# เป็น 0 <- 4 <- 5 <- 6 <- 2 <- 3 <- 1 ( ให้ใช้ singly linked list)
+
+#  *** Locomotive ***
+# Enter Input : 2 3 1 0 4 5 6
+# Before : 2 <- 3 <- 1 <- 0 <- 4 <- 5 <- 6
+# After : 0 <- 4 <- 5 <- 6 <- 2 <- 3 <- 1
+
+#  *** Locomotive ***
+# Enter Input : 1 2 3 0
+# Before : 1 <- 2 <- 3 <- 0
+# After : 0 <- 1 <- 2 <- 3
+
+
 class Node:
     def __init__(self, value, next=None):
         self.value = value
@@ -8,6 +26,7 @@ class LinkedList:
     def __init__(self):
         self.head = None
         self.tail = None
+        self.size = 0
 
     def __str__(self):
         s = ""
@@ -21,15 +40,15 @@ class LinkedList:
 
     def __getitem__(self, index):
         t = self.head
-        for i in range(index):
+        for _ in range(index):
             t = t.next
         return t.value
 
+    def __len__(self):
+        return self.size
+
     def isEmpty(self):
-        if self.head == None:
-            return True
-        else:
-            return False
+        return self.head == None
 
     def append(self, item):
         p = Node(item)
@@ -45,7 +64,15 @@ class LinkedList:
             self.tail = p
 
     def removeHead(self):
-        self.head = self.head.next
+        if self.head != None:
+            if self.head.next == None:
+                p = self.head
+                self.head = None
+            else:
+                p = self.head
+                self.head = self.head.next
+            self.size -= 1
+        return p.value
 
     def search(self, item):
         t = self.head
@@ -87,54 +114,3 @@ for i in range(l.index(0)):
     l.removeHead()
 
 print("After :", l)
-
-
-# def pop(self, pos):
-#     n = self.size()
-#     i = 0
-#     t = self.head
-#     while i < pos and pos < n:
-#         t = t.next
-#         i += 1
-#     if n == 1:
-#         self.head = None
-#         self.previous = None
-#     elif i == 0:
-#         self.head = t.next
-#         self.head.previous = None
-#     elif i == n - 1:
-#         self.tail = t.previous
-#         self.tail.next = None
-#     else:
-#         t.next.previous = t.previous
-#         t.previous.next = t.next
-
-# def addHead(self, item):
-#     p = Node(item)
-#     if self.head == None:
-#         self.head = p
-#     else:
-#         p.next = self.head
-#         self.head.previous = p
-#         self.head = p
-
-# def addTail(self, item):
-#     p = Node(item, None)
-#     self.tail.next == p
-#     self.tail = p
-
-# def removeTail(self):
-#     t = self.head
-#     while t.next.next != None:
-#         t = t.next
-#     t.next = t.next.next
-
-# def moveHead(self):
-#     t = self.head
-#     while t.next.value != 0:
-#         t = t.next
-#     self.tail.next = self.head
-#     self.tail = self.head
-#     self.head = t.next
-#     self.tail = t
-#     t.next = None
